@@ -1,0 +1,57 @@
+= C23 List
+
+My very bad and unsafe take on generic lists using the nice features of C23. 
+
+⚠️ Only (manually) tested with `int`
+
+== How to use
+
+`main.c` is a small program to test out the `list` library features.
+
+=== Run
+
+[source,sh]
+----
+make build --quiet && ./main
+----
+
+
+Other available rules are: `clean`, `cleanbin`, `cleanobj` and `expand`.
+
+=== See expanded macros
+
+[source,sh]
+----
+make expand --quiet
+----
+
+This prints `main.c`'s source with the macros expanded. Guaranteed unreadable and human-unfriendly.
+
+== Assumptions
+
+`list.h` assumes that, to enjoy the generic `list(T)` type, you only use the macros dedicated and provided by the library.
+
+A counter-example would be to manually free the underlying pointer yourself. Please, do not do that. C already allows you to shoot yourself in the foot. Don't make it worse.
+
+== Features
+
+Provided that you don't violate the above-mentioned assumptions, it is actually not too bad of a library.
+
+* Runtime errors for: out of bounds access, popping an element out of an empty list, deleting an already deleted list, and performing any operation with a deleted list.
+* Predicates so you can avoid running into runtime errors: validity check, emptiness check, index bound checking
+* (Wildfootnote:[gonna be real idk how to sanitize a block in a macro]) `for-in`-like iteration macro: iterate over the list like in modern languages, with an identifier that will store the current element
+* A naive implementation of `foldleft` that can be used like any function
+
+== Disclaimer ∕ Q&A
+
+I'm fully responsible of the terrible code quality. That said, I disclaim all liability if you happen to do the stupid mistake of using this piece of software in any serious project and fuck things up.
+
+____
+What are the weird comments in `main.c`?
+____
+
+If you're talking about the `/* <main::start> \*/` and `/* <main::end> */`, there are just markers used in the `expand` make rule. It is to filter everything but `main.c`'s source.
+
+== License
+
+link:./LICENSE[MIT license]
